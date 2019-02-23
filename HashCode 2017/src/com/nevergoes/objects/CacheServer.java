@@ -5,7 +5,7 @@ import java.util.List;
 public class CacheServer {
 
 	public int id;
-	public Endpoint[] endpoints;
+	public EndpointCache[] endpointCache;
 	public int load;
 	public List<Video> videos;
 
