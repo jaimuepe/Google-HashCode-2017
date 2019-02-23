@@ -23,6 +23,7 @@ public class App {
 	public static int X;
 
 	public static void main(String[] args) {
+
 		Parser.parseFile("me_at_the_zoo.in");
 
 		Map<Integer, List<Request>> endpointIdToRequests = new HashMap<>();
@@ -52,12 +53,18 @@ public class App {
 
 		for (CacheServer cacheServer : cacheServers) {
 
+			System.out.println("Cache " + cacheServer.id);
+
 			List<Request> requests = cacheIdToRequests.get(cacheServer.id);
 
 			if (requests != null) {
 
+				System.out.println(requests.size() + " requests");
+
 				Map<Integer, List<Request>> videoIdToRequests = requests.stream()
 						.collect(Collectors.groupingBy(r -> r.videoId));
+
+				System.out.println(videoIdToRequests.keySet().size() + " unique videos");
 
 				Map<Integer, Integer> videoIdToScore = new HashMap<>();
 
@@ -84,13 +91,25 @@ public class App {
 
 				List<List<Video>> combinations = Jaime.getCombinations(vv, 100);
 
-				List<Integer> totalScoresPerCombination = new ArrayList<>();
+				int maxScore = -100;
+				int maxScoreIdx = -1;
 
-				for (List<Video> combination : combinations) {
+				for (int i = 0; i < combinations.size(); i++) {
+
+					List<Video> combination = combinations.get(i);
+
 					int combScore = combination.stream().mapToInt(v -> videoIdToScore.get(v.id)).sum();
-					totalScoresPerCombination.add(combScore);
+					if (combScore > maxScore) {
+						maxScoreIdx = i;
+						maxScore = combScore;
+					}
 				}
 
+				System.out.println("Cache "
+						+ cacheServer.id + " better combination is: " + combinations.get(maxScoreIdx).stream()
+								.map(v -> v.id + "(" + v.size + ")").collect(Collectors.joining(", "))
+						+ " -> " + maxScore);
+				System.out.println();
 			}
 		}
 	}
