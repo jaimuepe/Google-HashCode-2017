@@ -32,6 +32,11 @@ public class Parser {
 		App.requests = new Request[requestsSize];
 		cacheServersSize = Integer.parseInt(dataLineSplit[3]);
 		App.cacheServers = new CacheServer[cacheServersSize];
+		for (int i = 0; i < cacheServersSize; i++) {
+			CacheServer cacheServer = new CacheServer();
+			cacheServer.id = i;
+			App.cacheServers[i] = cacheServer;
+		}
 		App.X = Integer.parseInt(dataLineSplit[4]);
 
 		// DATOS DEL TAMAÑO DE CADA VIDEO
@@ -64,12 +69,16 @@ public class Parser {
 
 			if (numberOfCachesAssociated > 0) {
 				for (int j = 0; j < numberOfCachesAssociated; j++) {
+
 					String[] endpointCacheInformation = lineas.get(lineNumber).split(" ");
 					EndpointCache endpointCache = new EndpointCache();
 					endpointCache.cacheId = Integer.parseInt(endpointCacheInformation[0]);
 					endpointCache.latency = Integer.parseInt(endpointCacheInformation[1]);
 					endpointCache.endpointId = endpoint.id;
 					endpoint.endpointCaches.add(endpointCache);
+
+					App.cacheServers[Integer.parseInt(endpointCacheInformation[0])].endpointCache.add(endpointCache);
+
 					lineNumber++;
 				}
 			}

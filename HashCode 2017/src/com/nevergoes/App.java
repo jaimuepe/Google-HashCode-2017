@@ -1,5 +1,7 @@
 package com.nevergoes;
 
+import java.util.Map;
+
 import com.nevergoes.io.Parser;
 import com.nevergoes.objects.CacheServer;
 import com.nevergoes.objects.Endpoint;
@@ -12,6 +14,7 @@ public class App {
 	public static Request[] requests;
 	public static Endpoint[] endpoints;
 	public static CacheServer[] cacheServers;
+	public static Map<Integer, CacheServer> cacheServersMap;
 	// Size of all CacheServers
 	public static int X;
 
